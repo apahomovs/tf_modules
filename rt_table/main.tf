@@ -1,17 +1,19 @@
 resource "aws_route_table" "rtb" {
   vpc_id = var.vpc_id
 
-  route {
-    cidr_block = "0.0.0.0/0"
-    gateway_id = var.gateway_id != "" ? var.gateway_id : null  # Only set if gateway_id is provided
-    nat_gateway_id = var.nat_gateway_id != "" ? var.nat_gateway_id : null  # Only set if nat_gateway_id is provided
+  dynamic "route" {
+    for_each = var.gateway_id != "" || var.nat_gateway_id != "" ? [1] : []
+    content {
+      cidr_block     = "0.0.0.0/0"
+      gateway_id     = var.gateway_id != "" ? var.gateway_id : null
+      nat_gateway_id = var.nat_gateway_id != "" ? var.nat_gateway_id : null
+    }
   }
 
   tags = {
-    Name = "${var.gateway_id == "" ? "private" : "public"}_rtb"
+    Name = "${var.gateway_id != "" ? "public" : "private"}_rtb"
   }
 }
-
 
 resource "aws_route_table_association" "assoc" {
   count = length(var.subnets)
