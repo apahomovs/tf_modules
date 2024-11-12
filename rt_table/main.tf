@@ -1,13 +1,20 @@
 resource "aws_route_table" "rtb" {
   vpc_id = var.vpc_id
 
-  # Define the route with conditional assignment
-  route {
-    cidr_block = "0.0.0.0/0"
+  dynamic "route" {
+    for_each = var.gateway_id != null ? [var.gateway_id] : []
+    content {
+      cidr_block = "0.0.0.0/0"
+      gateway_id = route.value
+    }
+  }
 
-    # Use gateway_id if var.gateway_id is set, otherwise use nat_gateway_id
-    gateway_id     = var.gateway_id != null ? var.gateway_id : null
-    nat_gateway_id = var.gateway_id == null && var.nat_gateway_id != null ? var.nat_gateway_id : null
+  dynamic "route" {
+    for_each = var.nat_gateway_id != null ? [var.nat_gateway_id] : []
+    content {
+      cidr_block     = "0.0.0.0/0"
+      nat_gateway_id = route.value
+    }
   }
 
   tags = {
