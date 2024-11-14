@@ -2,7 +2,7 @@ variable "name" {
 
 }
 
-variable "desciption" {
+variable "description" {
 
 }
 
