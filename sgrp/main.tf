@@ -10,7 +10,7 @@ resource "aws_security_group" "sg" {
 
 resource "aws_security_group_rule" "my_rule" {
   for_each                 = var.sg_rules
-  description              = var.description
+  description              = each.key
   type                     = each.value[0]
   from_port                = each.value[1]
   to_port                  = each.value[2]
