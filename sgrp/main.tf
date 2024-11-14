@@ -3,6 +3,9 @@ name = var.name
 description = var.desciption
 vpc_id = var.vpc_id
 
+tags = {
+  Name = var.sg_tag
+}
 egress {
   from_port = 0
   to_port = 0
@@ -10,11 +13,8 @@ egress {
   cidr_blocks = ["0.0.0.0/0"]
 }
 
-tags = {
-  Name = var.sg_tag
-}
-}
 
+}
 resource "aws_security_group_rule" "my_rule" {
   for_each = var.sg_rules
   description = each.key
