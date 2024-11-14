@@ -16,13 +16,13 @@ tags = {
 }
 
 resource "aws_security_group_rule" "my_rule" {
-
-  description = var.sg_description
-  type = var.type
-  from_port = var.from_port
-  to_port = var.to_port
-  protocol = var.protocol
-  cidr_blocks = length(var.cidr_blocks) <= 18 ? [var.cidr_blocks] : null
-  source_security_group_id = startswith(var.source_security_group_id, "sg-") ? var.source_security_group_id : null
+  for_each = var.sg_rules
+  description = var.sg_description 
+  type = each.value[0]
+  from_port = each.value[1]
+  to_port = each.value[2]
+  protocol = each.value[3]
+  cidr_blocks = length(each.value[4]) <= 18 ? [each.value[4]] : null
+  source_security_group_id = startswith(each.value[4], "sg-") ? each.value[4] : null
   security_group_id = aws_security_group.sg.id
 }
