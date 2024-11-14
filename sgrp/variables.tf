@@ -17,7 +17,3 @@ variable "sg_tag" {
 variable "sg_rules" {
 
 }
-
-variable "sg_description" {
-
-}
