@@ -10,7 +10,18 @@ variable "instance_type" {
   
 }
 
-variable "ec2_tag" {
+variable "instance_tag" {
   
 }
 
+variable "key_name" {
+  
+}
+
+variable "vpc_security_group_ids" {
+  
+}
+
+variable "user_data" {
+  
+}
